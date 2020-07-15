@@ -37,15 +37,29 @@ void TeamManager::init()
 void TeamManager::readTeamFromConfig(essentials::SystemConfig* sc)
 {
     std::string localAgentName = this->engine->getRobotName();
+    //std::string localAgentName = "Service";
     std::shared_ptr<std::vector<std::string>> agentNames = (*sc)["Globals"]->getSections("Globals.Team", NULL);
 
     Agent* agent;
     bool foundSelf = false;
     for (const std::string& agentName : *agentNames) {
-        int id = (*sc)["Globals"]->tryGet<int>(-1, "Globals", "Team", agentName.c_str(), "ID", NULL);
-
-        agent = new Agent(this->engine, this->teamTimeOut, this->engine->getId(id), agentName);
-        if (!foundSelf && agentName.compare(localAgentName) == 0) {
+        std::cout << "TM: " << agentName << std::endl;
+        std::string id = (*sc)["Globals"]->tryGet<std::string>("-1", "Globals", "Team", agentName.c_str(), "ID", NULL);
+        std::cout << "TM: " << id << std::endl;
+        
+        if (id != "-1") {
+            agent = new Agent(this->engine, this->teamTimeOut, this->engine->getId(id), agentName);
+            std::cout << "TM: static agent id " << " with local_agent_name:" << localAgentName << " agent_name:" << agentName << std::endl; 
+        } 
+        else {
+             essentials::IdentifierConstPtr newID = essentials::IDManager().generateID(18);
+             std::cout << "TM: generated id " << newID << std::endl; 
+             agent = new Agent(this->engine, this->teamTimeOut, this->engine->getId(localAgentName), localAgentName);
+            //  agent = new Agent(this->engine, this->teamTimeOut, newID, localAgentName);
+             std::cout << "TM: dynamic agent id " << agent->getId() << " with local_agent_name:" << localAgentName << " agent_name:" << agentName << std::endl; 
+        }
+        
+        if (!foundSelf && (agentName.compare(localAgentName) == 0 || id == "-1" )) {
             foundSelf = true;
             this->localAgent = agent;
             this->localAgent->setLocal(true);

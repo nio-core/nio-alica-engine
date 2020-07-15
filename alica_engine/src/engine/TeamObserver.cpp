@@ -126,6 +126,7 @@ void TeamObserver::doBroadCast(const IdGrp& msg) const
         return;
     }
     PlanTreeInfo pti = PlanTreeInfo();
+    std::cout << "\033[0;34m" << "TO:: doBroadCast PTI: " << _me->getId()  << "  " << _me->getId()->getRaw() << "\033[0m" << std::endl;
     pti.senderID = _me->getId();
     pti.stateIDs = msg;
     pti.succeededEPs = _me->getEngineData().getSuccessMarks().toIdGrp();

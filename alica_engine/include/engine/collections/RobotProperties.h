@@ -11,6 +11,11 @@
 #include <sstream>
 #include <string>
 
+namespace essetials
+{
+    class IdentifierConstPtr;
+}
+
 namespace alica
 {
 
@@ -25,7 +30,11 @@ public:
     RobotProperties(const AlicaEngine* ae, const std::string& name);
     ~RobotProperties();
 
+    essentials::IdentifierConstPtr extractID(std::string& name,  essentials::SystemConfig* sc) const;
+
     const std::string& getDefaultRole() const { return _defaultRole; }
+    std::unordered_map<std::string, Characteristic* > getCharacteristics() const { return _characteristics; }
+    const std::string& getName() const { return _name; }
 
     friend std::ostream& operator<<(std::ostream& os, const alica::RobotProperties& obj)
     {
@@ -35,7 +44,11 @@ public:
 
 private:
     void readFromConfig(const AlicaEngine* engine, const std::string& name);
+    void extractAgentCharacteristics(const std::string& name, essentials::SystemConfig* sc);
 
+    const AlicaEngine* _ae;
+    const std::string _name;
+    std::unordered_map<std::string, Characteristic* > _characteristics;
     std::string _defaultRole;
 };
 

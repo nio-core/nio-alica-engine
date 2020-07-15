@@ -39,6 +39,18 @@ void SuccessCollection::clear()
     }
 }
 
+// const std::vector<AgentGrp> SuccessCollection::getAgents() const
+// {
+//      std::cout << std::endl << "SC: data " << _successData.size() << std::endl;
+//     for (AgentGrp group: _successData) {
+//         std::cout << "SC: gr " << group.size() << std::endl;
+//         for(essentials::IdentifierConstPtr idPtr: group){
+//             std::cout << "SC: id " << idPtr << std::endl;
+//         }
+//     }
+//     return _successData;
+// }
+
 const AgentGrp* SuccessCollection::getAgents(const EntryPoint* ep) const
 {
     if (ep->getPlan() == _plan) {

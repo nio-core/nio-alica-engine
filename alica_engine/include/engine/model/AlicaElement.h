@@ -7,6 +7,8 @@ namespace alica
 {
 class ModelFactory;
 class Factory;
+class RobotProperties;
+class BehaviourFactory;
 /**
  * Base class of all model elements
  */
@@ -34,6 +36,10 @@ public:
 private:
     friend ModelFactory;
     friend Factory;
+    // TODO: remove me and extract generating characteristic to factory class 
+    friend RobotProperties; 
+    friend BehaviourFactory;
+
     void setId(int64_t id);
     void setName(const std::string& name);
     void setComment(const std::string& comment);

@@ -7,6 +7,9 @@
 
 #include <alica_common_config/debug_output.h>
 
+#include "engine/model/Behaviour.h"
+
+
 namespace alica
 {
 
@@ -78,6 +81,21 @@ void Factory::setAttributes(const YAML::Node& node, alica::AlicaElement* ael)
 
 const AlicaElement* Factory::getElement(const int64_t id)
 {
+
+    for (auto& pair: Factory::modelManager->elements) {
+        AlicaElement * e = pair.second;
+        // if (Behaviour* behaviour = dynamic_cast<Behaviour*>(e)) {
+        //     std::cout << "\033[0;35m" << "F: Behaviour  " << pair.first << " " << pair.second->getName() << "\033[0m" << std::endl; 
+        // }  
+        // else if (EntryPoint* entryPoint = dynamic_cast<EntryPoint*>(e)) 
+        // {
+        //     std::cout << "\033[0;35m" << "F: EntryPoint  " << pair.first << " " << pair.second->getName() << "\033[0m" << std::endl; 
+        // }
+        // else 
+        //     std::cout << "\033[0;35m" << "F: Unknown  " << pair.first << " " << pair.second->getName() << "\033[0m" << std::endl;           
+    }
+    // std::cout <<std::endl; 
+
     auto mapEntry = Factory::modelManager->elements.find(id);
     if (mapEntry != Factory::modelManager->elements.end()) {
         return mapEntry->second;
@@ -87,6 +105,7 @@ const AlicaElement* Factory::getElement(const int64_t id)
 
 void Factory::storeElement(AlicaElement* ael, const std::string& type)
 {
+    // std::cout << "\033[0;36m" << "F: " << ael->getName() << "  " << type << "\033[0m" << std::endl;
     // insert into general element map
     if (modelManager->elements.find(ael->getId()) != modelManager->elements.end()) {
         std::stringstream ss;

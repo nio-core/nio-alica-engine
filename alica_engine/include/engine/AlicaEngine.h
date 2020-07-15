@@ -174,7 +174,7 @@ private:
 template <class Prototype>
 essentials::IdentifierConstPtr AlicaEngine::getId(Prototype& idPrototype) const
 {
-    return essentials::IdentifierConstPtr(this->agentIDManager->getID<Prototype>(idPrototype));
+     return essentials::IdentifierConstPtr(this->agentIDManager->getID<Prototype>(idPrototype));
 }
 
 template <typename T>

@@ -46,6 +46,8 @@ UtilityInterval UtilityFunction::eval(const PartialAssignment* newAss, const Ass
     UtilityInterval sumOfUI(0.0, 0.0);
     double sumOfWeights = 0.0;
 
+    //std::cout << "\033[0;36m" << "UF: assigned agent count " << newAss->getAssignedAgentCount() << "\033[0m" << std::endl;
+
     IAssignment wrapper{newAss};
     // Sum up priority summand
     UtilityInterval prioUI = getPriorityResult(wrapper);

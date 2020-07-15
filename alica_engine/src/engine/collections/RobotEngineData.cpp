@@ -35,6 +35,7 @@ void RobotEngineData::updateSuccessMarks(const IdGrp& succeededEps)
 
 void RobotEngineData::initDomainVariables()
 {
+    std::cout << "\033[0;34m" << "RED: " << _agentId  << "\033[0m" << std::endl;
     std::stringstream ss;
     ss << *_agentId << ".";
     std::string agentIdString = ss.str();

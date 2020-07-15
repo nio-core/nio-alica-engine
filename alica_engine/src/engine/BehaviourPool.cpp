@@ -48,12 +48,15 @@ bool BehaviourPool::init(IBehaviourCreator* bc)
         auto basicBeh = _behaviourCreator->createBehaviour(beh->getId());
         if (basicBeh != nullptr) {
             // set stuff from behaviour configuration in basic behaviour object
+            std::cout << "\033[0;31m" << "BehaviourPool: behaviour "<< basicBeh->getName() <<" init started" << "\033[0m" << std::endl;
             basicBeh->setBehaviour(beh);
             basicBeh->setDelayedStart(beh->getDeferring());
             basicBeh->setInterval(1000 / (beh->getFrequency() < 1 ? 1 : beh->getFrequency()));
             basicBeh->setEngine(_ae);
             basicBeh->init();
             _availableBehaviours.insert(make_pair(beh, basicBeh));
+            std::cout << "\033[0;31m" << "BehaviourPool: behaviour "<< basicBeh->getName() <<" added" << "\033[0m" << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         } else {
             return false;
         }
@@ -87,14 +90,21 @@ void BehaviourPool::terminateAll()
  */
 void BehaviourPool::startBehaviour(RunningPlan& rp)
 {
+    // std::cout << "\033[0;34m" << "BP: Running plan " << rp << "\033[0m" << std::endl;
+    
     if (const Behaviour* beh = dynamic_cast<const Behaviour*>(rp.getActivePlan())) {
         const std::shared_ptr<BasicBehaviour>& bb = _availableBehaviours.at(beh);
+        std::cout << "\033[0;36m" << "BP:  start behaviour " << beh->getName() << "\033[0m" << std::endl;
+        std::cout << "\033[0;36m" << "BP:    start BasicBehaviour " << bb->getName() << "\033[0m" << std::endl;
+
         if (bb != nullptr) {
             // set both directions rp <-> bb
             rp.setBasicBehaviour(bb.get());
             bb->setRunningPlan(&rp);
 
+            std::cout << "\033[0;36m" << "BP:      start behaviour " << bb->getName() <<  "\033[0m" << std::endl;
             bb->start();
+
         }
     } else {
         ALICA_ERROR_MSG("BP::startBehaviour(): Cannot start Behaviour of given RunningPlan! Plan Name: " << rp.getActivePlan()->getName()

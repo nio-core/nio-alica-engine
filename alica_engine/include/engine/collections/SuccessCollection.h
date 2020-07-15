@@ -22,6 +22,7 @@ public:
 
     void setSuccess(essentials::IdentifierConstPtr robot, const EntryPoint* ep);
     void clear();
+    // const  std::vector<AgentGrp> getAgents() const;
     const AgentGrp* getAgents(const EntryPoint* ep) const;
     const AgentGrp* getAgentsById(int64_t id) const;
     const AgentGrp* getAgentsByIndex(int idx) const

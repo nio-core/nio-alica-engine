@@ -32,11 +32,11 @@ public:
 
     virtual void tick(){};
 
-    void onSyncTalkReceived(std::shared_ptr<SyncTalk> st);
-    void onSyncReadyReceived(std::shared_ptr<SyncReady> sr);
-    void onAuthorityInfoReceived(const AllocationAuthorityInfo& aai);
-    void onPlanTreeInfoReceived(std::shared_ptr<PlanTreeInfo> pti);
-    void onSolverResult(const SolverResult& sr);
+    virtual void onSyncTalkReceived(std::shared_ptr<SyncTalk> st) const = 0;
+    virtual void onSyncReadyReceived(std::shared_ptr<SyncReady> sr) const = 0;
+    virtual void onAuthorityInfoReceived(const AllocationAuthorityInfo& aai) const = 0;
+    virtual void onPlanTreeInfoReceived(std::shared_ptr<PlanTreeInfo> pti) const = 0;
+    virtual void onSolverResult(const SolverResult& sr) const = 0;
 
     virtual void startCommunication() = 0;
     virtual void stopCommunication() = 0;

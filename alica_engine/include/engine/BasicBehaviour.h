@@ -73,6 +73,11 @@ public:
      */
     virtual void init() {}
 
+    void notifyLoopFinished()  {_finished = !_loop; }
+    bool isFinished() {return _finished;}
+    
+    void isLoop(bool loop) { _loop = loop;}
+
 protected:
     essentials::IdentifierConstPtr getOwnId() const;
     AlicaEngine* getEngine() const { return _engine; }
@@ -130,5 +135,8 @@ private:
     mutable std::mutex _runLoopMutex;
     std::chrono::milliseconds _msInterval;
     std::chrono::milliseconds _msDelayedStart;
+
+    bool _finished;
+    bool _loop;
 };
 } /* namespace alica */

@@ -112,7 +112,8 @@ void PlanBase::start()
  * The Engine's main loop
  */
 void PlanBase::run()
-{
+{ 
+    std::cout << "PB: Main Thread started" << std::endl;
     ALICA_DEBUG_MSG("PB: Run-Method of PlanBase started. ");
     while (_running) {
         AlicaTime beginTime = _alicaClock->now();
@@ -132,7 +133,9 @@ void PlanBase::run()
                 std::unique_lock<std::mutex> lckStep(_stepMutex);
                 _isWaiting = true;
                 AlicaEngine* ae = _ae;
+                //std::cout << "\033[0;36m" << "PB: is waiting" << "\033[0m" << std::endl;
                 _stepModeCV.wait(lckStep, [ae] { return ae->getStepCalled(); });
+                //std::cout << "\033[0;36m" << "PB: get signal" << "\033[0m" << std::endl;
                 _ae->setStepCalled(false);
                 _isWaiting = false;
                 if (!_running) {
@@ -313,6 +316,7 @@ PlanBase::~PlanBase()
 void PlanBase::addFastPathEvent(RunningPlan* p)
 {
     {
+        std::cout << "\033[0;36m" << "PB: addFastPathEvent mutex" << "\033[0m" << std::endl;
         std::lock_guard<std::mutex> lock(_lomutex);
         _fpEvents.push(p);
     }

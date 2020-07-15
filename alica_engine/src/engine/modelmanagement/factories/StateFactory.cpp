@@ -61,6 +61,7 @@ void StateFactory::attachReferences() {
     for (std::pair<int64_t, int64_t> pairs : Factory::stateAbstractPlanReferences) {
         State* st = (State*) Factory::getElement(pairs.first);
         AbstractPlan* p = (AbstractPlan*) Factory::getElement(pairs.second);
+        std::cout << "\033[0;36m" << "SF: " << st->getName() << "  " << pairs.second << "\033[0m" << std::endl;
         st->_plans.push_back(p);
     }
     Factory::stateAbstractPlanReferences.clear();

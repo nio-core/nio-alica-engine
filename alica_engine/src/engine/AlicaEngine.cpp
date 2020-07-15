@@ -20,6 +20,7 @@
 #include "engine/syncmodule/SyncModule.h"
 
 #include <alica_common_config/debug_output.h>
+#include <DynamicRoleAssignment.h>
 #include <essentials/IDManager.h>
 
 namespace alica
@@ -52,33 +53,46 @@ AlicaEngine::AlicaEngine(
         , stepEngine(stepEngine)
         , agentIDManager(idManager)
 {
+
+int i = 0;
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     _maySendMessages = !(*sc)["Alica"]->get<bool>("Alica.SilentStart", NULL);
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     this->useStaticRoles = (*sc)["Alica"]->get<bool>("Alica.UseStaticRoles", NULL);
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     PartialAssignment::allowIdling((*this->sc)["Alica"]->get<bool>("Alica.AllowIdling", NULL));
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
 
     this->planRepository = new PlanRepository();
     this->modelManager = new ModelManager(this->planRepository);
     this->masterPlan = this->modelManager->loadPlanTree(masterPlanName);
     this->roleSet = this->modelManager->loadRoleSet(roleSetName);
 
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     this->_teamManager = new TeamManager(this, true);
     this->_teamManager->init();
 
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     this->behaviourPool = new BehaviourPool(this);
     this->teamObserver = new TeamObserver(this);
     if (this->useStaticRoles) {
         this->roleAssignment = new StaticRoleAssignment(this);
     } else {
-        AlicaEngine::abort("Unknown RoleAssignment Type!");
+        std::cout << "AlicaEngine: Dynamic RoleAssignment " << std::endl;
+        this->roleAssignment = new DynamicRoleAssignment(this);
+        //AlicaEngine::abort("Unknown RoleAssignment Type!");
     }
 
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     // the communicator is expected to be set before init() is called
     this->roleAssignment->setCommunication(communicator);
     this->syncModul = new SyncModule(this);
 
+std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     if (!planRepository->verifyPlanBase()) {
         abort("Error in parsed plans.");
     }
+    std::cout << "AlicaEngine: Constructor " << i++ << "..." << std::endl;
     ALICA_DEBUG_MSG("AE: Constructor finished!");
 }
 
@@ -332,7 +346,5 @@ essentials::IdentifierConstPtr AlicaEngine::getIDFromBytes(const uint8_t *idByte
 {
     return essentials::IdentifierConstPtr(this->agentIDManager->getIDFromBytes(idBytes, idSize, type));
 }
-
-
 
 } // namespace alica

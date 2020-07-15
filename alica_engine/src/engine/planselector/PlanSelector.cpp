@@ -206,10 +206,15 @@ RunningPlan* PlanSelector::createRunningPlan(RunningPlan* planningParent, const 
 bool PlanSelector::getPlansForStateInternal(
         RunningPlan* planningParent, const AbstractPlanGrp& plans, const AgentGrp& robotIDs, std::vector<RunningPlan*>& o_plans)
 {
-    ALICA_DEBUG_MSG("<######PS: GetPlansForState: Parent:" << (planningParent != nullptr ? planningParent->getActivePlan()->getName() : "null")
-                                                           << " plan count: " << plans.size() << " robot count: " << robotIDs.size() << " ######>");
+    //ALICA_DEBUG_MSG("<######PS: GetPlansForState: Parent:" << (planningParent != nullptr ? planningParent->getActivePlan()->getName() : "null")
+    //                                                      << " plan count: " << plans.size() << " robot count: " << robotIDs.size() << " ######>");
+    std::cout <<"<######PS: GetPlansForState: Parent:" << (planningParent != nullptr ? planningParent->getActivePlan()->getName() : "null")
+                                                           << " plan count: " << plans.size() << " robot count: " << robotIDs.size() << " ######>" << std::endl;
     for (const AbstractPlan* ap : plans) {
+         std::cout << "\033[0;36m" << "PS: select for abstract plan " << ap->getName() << "\033[0m" << std::endl;
+
         if (const Behaviour* beh = dynamic_cast<const Behaviour*>(ap)) {
+            std::cout << "\033[0;36m" << "PS: " << beh->getName() << " is behaviour " << "\033[0m" << std::endl;
             RunningPlan* rp = _pb->makeRunningPlan(beh);
             // A Behaviour is a Plan too (in this context)
             rp->usePlan(beh);
@@ -219,6 +224,7 @@ bool PlanSelector::getPlansForStateInternal(
             ALICA_DEBUG_MSG("PS: Added Behaviour " << beh->getName());
 
         } else if (const Plan* p = dynamic_cast<const Plan*>(ap)) {
+            std::cout << "\033[0;36m" << "PS: " << p->getName() << " is plan " << "\033[0m" << std::endl;
             double zeroValue;
             RunningPlan* rp = createRunningPlan(planningParent, {p}, robotIDs, nullptr, nullptr, zeroValue);
             if (!rp) {
@@ -227,6 +233,7 @@ bool PlanSelector::getPlansForStateInternal(
             }
             o_plans.push_back(rp);
         } else if (const PlanType* pt = dynamic_cast<const PlanType*>(ap)) {
+            std::cout << "\033[0;36m" << "PS: " << pt->getName() << " is plantype " << "\033[0m" << std::endl;
             double zeroVal;
             RunningPlan* rp = createRunningPlan(planningParent, pt->getPlans(), robotIDs, nullptr, pt, zeroVal);
             if (!rp) {

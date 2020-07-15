@@ -207,6 +207,7 @@ public:
             , _pas(pas)
     {
     }
+    
     UniquePartialAssignmentSuccessIterator begin() const { return UniquePartialAssignmentSuccessIterator(0, false, _epIdx, _pas); }
     UniquePartialAssignmentSuccessIterator end() const;
 

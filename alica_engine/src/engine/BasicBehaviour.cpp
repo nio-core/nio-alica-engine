@@ -42,6 +42,8 @@ BasicBehaviour::BasicBehaviour(const std::string& name)
         , _behaviourTrigger(nullptr)
         , _runThread(nullptr)
         , _context(nullptr)
+        , _loop(false)
+        , _finished(false)
 {
 }
 
@@ -158,6 +160,7 @@ void BasicBehaviour::initInternal()
 
 void BasicBehaviour::runInternalTimed()
 {
+    std::cout << "\033[0;36m" << "BB: runInternalTimed started" << "\033[0m" << std::endl;
     while (_started) {
         {
             std::unique_lock<std::mutex> lck(_runLoopMutex);
@@ -166,7 +169,10 @@ void BasicBehaviour::runInternalTimed()
                     onTermination();
                 }
                 _contextInRun = nullptr;
+                std::cout << "\033[0;36m" << "BB: " << _name << " wait for signal to run" << "\033[0m" << std::endl;
                 _runCV.wait(lck, [this] { return _running || !_started; }); // wait for signal to run
+                std::cout << "\033[0;36m" << "BB: " << _name << " get signal" << "\033[0m" << std::endl;
+
             }
             _contextInRun = _context;
         }
@@ -180,8 +186,10 @@ void BasicBehaviour::runInternalTimed()
             }
             initInternal();
         }
-        std::chrono::system_clock::time_point start = std::chrono::high_resolution_clock::now();
+        //std::chrono::system_clock::time_point 
+        std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
         try {
+            std::cout << "\033[0;36m" << "BB: call run method" << "\033[0m" << std::endl;
             run(nullptr);
         } catch (const std::exception& e) {
             std::string err = std::string("Exception caught:  ") + getName() + std::string(" - ") + std::string(e.what());
@@ -203,6 +211,7 @@ void BasicBehaviour::runInternalTriggered()
             if (_contextInRun) {
                 onTermination();
             }
+            std::cout << "\033[0;36m" << "BB: " << _name << " get signal" << "\033[0m" << std::endl;
             std::unique_lock<std::mutex> lck(_runLoopMutex);
             _contextInRun = nullptr;
             _runCV.wait(lck, [this] { return !_started || (_behaviourTrigger->isNotifyCalled(&_runCV) && _running); });

@@ -16,7 +16,7 @@ Agent::Agent(const AlicaEngine* engine, AlicaTime timeout, essentials::Identifie
         : _id(id)
         , _name()
         , _engine(engine)
-        , _properties()
+        , _properties(_engine, _name)
         , _engineData(engine, id)
         , _timeout(timeout)
         , _active(false)

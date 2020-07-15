@@ -522,9 +522,11 @@ bool RunningPlan::isAnyChildTaskSuccessful() const
  */
 void RunningPlan::activate()
 {
+    std::cout << "\033[0;36m" << "RP: activate " << this->getActivePlan()->getName() << "\033[0m" << std::endl;
     assert(_status.active != PlanActivity::Retired);
     _status.active = PlanActivity::Active;
     if (isBehaviour()) {
+        std::cout << "\033[0;36m" << "RP: try to start behaviour" << "\033[0m" << std::endl;
         _ae->getBehaviourPool()->startBehaviour(*this);
     }
     attachPlanConstraints();
