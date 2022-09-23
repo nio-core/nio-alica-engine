@@ -133,7 +133,9 @@ PlanChange RuleBook::visit(RunningPlan& r)
 PlanChange RuleBook::dynamicAllocationRule(RunningPlan& r)
 {
     assert(!r.isRetired());
+    // std::cout <<  "RB: dynAlloc-Rule called." << std::endl;
     ALICA_DEBUG_MSG("RB: dynAlloc-Rule called.");
+    // std::cout <<  "RB: dynAlloc RP \n" << r << std::endl;
     ALICA_DEBUG_MSG("RB: dynAlloc RP \n" << r);
 
     if (r.isAllocationNeeded() || r.isBehaviour()) {
@@ -336,7 +338,9 @@ PlanChange RuleBook::planPropagationRule(RunningPlan& r)
 PlanChange RuleBook::allocationRule(RunningPlan& rp)
 {
     assert(!rp.isRetired());
+    // std::cout <<  "RB: Allocation-Rule called." << std::endl;
     ALICA_DEBUG_MSG("RB: Allocation-Rule called.");
+    // std::cout <<  "RB: Allocation RP \n" << rp << std::endl;
     ALICA_DEBUG_MSG("RB: Allocation RP \n" << rp);
 
     if (!rp.isAllocationNeeded()) {
@@ -353,12 +357,15 @@ PlanChange RuleBook::allocationRule(RunningPlan& rp)
     bool ok = _ps->getPlansForState(&rp, rp.getActiveState()->getPlans(), agents, children);
     if (!ok || children.size() < rp.getActiveState()->getPlans().size()) {
         rp.addFailure();
+        std::cout <<  "RB: PlanAllocFailed " << rp.getActivePlan()->getName() << std::endl;
         ALICA_DEBUG_MSG("RB: PlanAllocFailed " << rp.getActivePlan()->getName());
         return PlanChange::FailChange;
     }
     rp.addChildren(children);
 
+    std::cout <<  "RB: after add children " << std::endl;
     ALICA_DEBUG_MSG("RB: after add children");
+    std::cout <<  "RB: PlanAlloc " << rp.getActivePlan()->getName() << std::endl;
     ALICA_DEBUG_MSG("RB: PlanAlloc " << rp.getActivePlan()->getName());
 
     if (!children.empty()) {

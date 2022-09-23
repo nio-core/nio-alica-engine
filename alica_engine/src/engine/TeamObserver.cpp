@@ -126,7 +126,7 @@ void TeamObserver::doBroadCast(const IdGrp& msg) const
         return;
     }
     PlanTreeInfo pti = PlanTreeInfo();
-    std::cout << "\033[0;34m" << "TO:: doBroadCast PTI: " << _me->getId()  << "  " << _me->getId()->getRaw() << "\033[0m" << std::endl;
+    std::cout << "\033[0;34m" << "TO:: doBroadCast PTI: " << _me->getId()  << "  raw data:" << _me->getId()->getRaw() << "\033[0m" << std::endl;
     pti.senderID = _me->getId();
     pti.stateIDs = msg;
     pti.succeededEPs = _me->getEngineData().getSuccessMarks().toIdGrp();
@@ -271,12 +271,16 @@ void TeamObserver::notifyRobotLeftPlan(const AbstractPlan* plan)
 void TeamObserver::handlePlanTreeInfo(std::shared_ptr<PlanTreeInfo> incoming)
 {
     if (incoming->senderID != _me->getId()) {
-        ALICA_DEBUG_MSG("TeamObserver: IncomingID: '" << incoming->senderID << "' OwnID: '" << _me->getId() << "'");
+        std::cout << "TO: IncomingID: '" << incoming->senderID->hash() << " != ' OwnID: '" << _me->getId()->hash() << "'" << std::endl;
+        ALICA_DEBUG_MSG("TO: IncomingID: '" << incoming->senderID->hash() << "' OwnID: '" << _me->getId()->hash() << "'");
         if (_tm->isAgentIgnored(incoming->senderID)) {
             return;
         }
         lock_guard<mutex> lock(_msgQueueMutex);
         _msgQueue.emplace_back(std::move(incoming), _ae->getAlicaClock()->now());
+    }
+    else {
+        std::cout << "TO: IncomingID: '" << incoming->senderID->hash() << " == ' OwnID: '" << _me->getId()->hash() << "'" << std::endl;
     }
 }
 

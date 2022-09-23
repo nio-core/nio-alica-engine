@@ -15,7 +15,7 @@
 #include <csignal>
 #include <string>
 
-#include <ros/ros.h>
+//#include <ros/ros.h>
 
 #include <gtest/gtest.h>
 
@@ -41,9 +41,9 @@ protected:
     void SetUp() override
     {
         // determine the path to the test config
-        ros::NodeHandle nh;
+        //ros::NodeHandle nh;
         std::string path;
-        nh.param<std::string>("/rootPath", path, ".");
+        //nh.param<std::string>("/rootPath", path, ".");
 
         // bring up the SystemConfig with the corresponding path
         sc = essentials::SystemConfig::getInstance();

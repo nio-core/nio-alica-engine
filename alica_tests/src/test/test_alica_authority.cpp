@@ -30,9 +30,9 @@ protected:
     virtual void SetUp()
     {
         // determine the path to the test config
-        ros::NodeHandle nh;
+        //ros::NodeHandle nh;
         std::string path;
-        nh.param<std::string>("/rootPath", path, ".");
+        //nh.param<std::string>("/rootPath", path, ".");
         // bring up the SystemConfig with the corresponding path
         sc = essentials::SystemConfig::getInstance();
         sc->setRootPath(path);

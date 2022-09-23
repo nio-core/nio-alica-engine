@@ -17,6 +17,7 @@
 #include "engine/modelmanagement/ModelManager.h"
 #include "engine/planselector/PartialAssignment.h"
 #include "engine/teammanager/TeamManager.h"
+#include "engine/skillmanagement/SkillModule.h"
 #include "engine/syncmodule/SyncModule.h"
 
 #include <alica_common_config/debug_output.h>
@@ -298,6 +299,11 @@ std::string AlicaEngine::getRobotName() const
     return sc->getHostname();
 }
 
+void AlicaEngine::setSkillModule(SkillModule * skills)
+{
+    this->skills = skills;
+}
+
 void AlicaEngine::setLog(Logger* log)
 {
     this->log = log;
@@ -346,5 +352,7 @@ essentials::IdentifierConstPtr AlicaEngine::getIDFromBytes(const uint8_t *idByte
 {
     return essentials::IdentifierConstPtr(this->agentIDManager->getIDFromBytes(idBytes, idSize, type));
 }
+
+essentials::IDManager* AlicaEngine::getIdManager() { return this->agentIDManager; }
 
 } // namespace alica

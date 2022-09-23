@@ -36,6 +36,7 @@ class IConstraintCreator;
 
 class IAlicaCommunication;
 
+class SkillModule;
 class IRoleAssignment;
 
 class AlicaEngine
@@ -85,8 +86,9 @@ public:
     SolverType* getSolver() const;
 
     // Data Access:
-
     const RoleSet* getRoleSet() const { return roleSet; }
+    SkillModule * getSkillModule(){return this->skills; }
+    void setSkillModule(SkillModule * skills);
 
     // Setters:
     void setMaySendMessages(bool maySendMessages);
@@ -110,6 +112,8 @@ public:
     essentials::IdentifierConstPtr getIDFromBytes(const uint8_t *idBytes, int idSize, uint8_t type = essentials::Identifier::UUID_TYPE) const;
     template <class Prototype>
     essentials::IdentifierConstPtr getId(Prototype& idPrototype) const;
+    essentials::IDManager* getIdManager();
+
 
 private:
     void setStepEngine(bool stepEngine);
@@ -125,6 +129,8 @@ private:
     SyncModule* syncModul;
     PlanRepository* planRepository;
     BlackBoard _blackboard;
+
+    SkillModule * skills;
 
     essentials::IDManager* agentIDManager;
     Logger* log;

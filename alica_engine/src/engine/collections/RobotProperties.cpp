@@ -16,14 +16,14 @@ RobotProperties::RobotProperties(const AlicaEngine* engine, const std::string& n
 :_ae(engine), 
  _name(name)
 {
-    std::cout << "RobotProperties Constructor 2    " << name <<  std::endl;
+    std::cout << "RobotProperties Constructor 2    name:" << name <<   std::endl;
     readFromConfig(engine, name);
     //extractAgentCharacteristics( name,  essentials::SystemConfig::getInstance());
 }
 
 
  essentials::IdentifierConstPtr RobotProperties::extractID(std::string& name,  essentials::SystemConfig* sc) const {
-        std::cout << "\033[0;34m" << "\nRP:: ---------------------------" << "\033[0m" << std::endl;
+        std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
         std::cout << "\033[0;34m" << "RP:: Extract ID for " << name << "\033[0m" << std::endl;
         std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
         std::string id = (*sc)["Globals"]->tryGet<std::string>("NO_ID_SPECIFIED","Globals", "Team", name.c_str(), "ID", NULL);
@@ -31,7 +31,7 @@ RobotProperties::RobotProperties(const AlicaEngine* engine, const std::string& n
 
         if (!id.empty() && id.compare("NO_ID_SPECIFIED") != 0){
             essentials::IdentifierConstPtr idPtr = _ae->getId(id);
-            std::cout << "\033[0;34m" << "\nRP:: ---------------------------" << "\033[0m" << std::endl;
+            std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
             std::cout << "\033[0;34m" << "RP:: Use ID " << id << "  for " << name <<  "  " << idPtr << "\033[0m" << std::endl;
             std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
             return _ae->getId(id);
@@ -40,8 +40,8 @@ RobotProperties::RobotProperties(const AlicaEngine* engine, const std::string& n
             if (_ae == nullptr)
                 return nullptr;
             essentials::IdentifierConstPtr idPtr = _ae->getId(name);
-            std::cout << "\033[0;34m" << "\nRP:: ---------------------------" << "\033[0m" << std::endl;
-            std::cout << "\033[0;34m" << "RP:: Get ID " << idPtr << "  for " << name << "\033[0m" << std::endl;
+            std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
+            std::cout << "\033[0;34m" << "RP:: Get ID " << idPtr->hash() << "  for " << name << "\033[0m" << std::endl;
             std::cout << "\033[0;34m" << "RP:: ---------------------------" << "\033[0m" << std::endl;
             return idPtr;
         }
@@ -57,10 +57,11 @@ void RobotProperties::readFromConfig(const AlicaEngine* engine, const std::strin
     essentials::SystemConfig* sc = essentials::SystemConfig::getInstance();
     std::shared_ptr<std::vector<std::string>> agentNames = (*sc)["Globals"]->getSections("Globals.Team", NULL);
     std::cout << "RP: reading from config ... (team size " << agentNames->size() << ")" << std::endl;
+
     for (const std::string& agentName : * agentNames) {
-        
+        std::cout << "RP: find existing agent configuration  name:" << name << " ==  name:" << agentName << std::endl;
+
         if (agentName.compare(name.c_str()) == 0) {
-            std::cout << "RP: find existing agent configuration "  << std::endl;
             characteristics = (*sc)["Globals"]->getNames("Globals", "Team", name.c_str(), NULL);
                 std::cout << "RP: find " << characteristics->size() << " characteristics "  << std::endl;
                 for (const std::string& s : *characteristics) {

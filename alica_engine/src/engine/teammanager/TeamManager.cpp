@@ -43,9 +43,9 @@ void TeamManager::readTeamFromConfig(essentials::SystemConfig* sc)
     Agent* agent;
     bool foundSelf = false;
     for (const std::string& agentName : *agentNames) {
-        std::cout << "TM: " << agentName << std::endl;
+        std::cout << "TM: agent name:" << agentName << std::endl;
         std::string id = (*sc)["Globals"]->tryGet<std::string>("-1", "Globals", "Team", agentName.c_str(), "ID", NULL);
-        std::cout << "TM: " << id << std::endl;
+        std::cout << "TM:         id:" << id << std::endl;
         
         if (id != "-1") {
             agent = new Agent(this->engine, this->teamTimeOut, this->engine->getId(id), agentName);
@@ -53,10 +53,10 @@ void TeamManager::readTeamFromConfig(essentials::SystemConfig* sc)
         } 
         else {
              essentials::IdentifierConstPtr newID = essentials::IDManager().generateID(18);
-             std::cout << "TM: generated id " << newID << std::endl; 
+             std::cout << "TM: generated id:" << newID << std::endl; 
              agent = new Agent(this->engine, this->teamTimeOut, this->engine->getId(localAgentName), localAgentName);
             //  agent = new Agent(this->engine, this->teamTimeOut, newID, localAgentName);
-             std::cout << "TM: dynamic agent id " << agent->getId() << " with local_agent_name:" << localAgentName << " agent_name:" << agentName << std::endl; 
+             std::cout << "TM: dynamic agent id:" << agent->getId() << " with local_agent_name:" << localAgentName << " agent_name:" << agentName << std::endl; 
         }
         
         if (!foundSelf && (agentName.compare(localAgentName) == 0 || id == "-1" )) {
@@ -126,7 +126,10 @@ void TeamManager::setTimeLastMsgReceived(essentials::IdentifierConstPtr agentId,
         mapIter->second->setTimeLastMsgReceived(timeLastMsgReceived);
     } else {
         // TODO alex robot properties protokoll anstoßen
-        Agent* agent = new Agent(this->engine, this->teamTimeOut, agentId);
+        std::cout << "TM: setTimeLastMsgReceived id:" << agentId.get()->getRaw() << std::endl; 
+        std::stringstream _name;
+        _name << agentId.get()->getRaw();
+        Agent* agent = new Agent(this->engine, this->teamTimeOut, agentId, _name.str());
         agent->setTimeLastMsgReceived(timeLastMsgReceived);
         _agents.emplace(agentId, agent);
     }

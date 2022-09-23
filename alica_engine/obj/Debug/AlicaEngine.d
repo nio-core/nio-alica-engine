@@ -86,6 +86,8 @@ obj/Debug/AlicaEngine.o: src/engine/AlicaEngine.cpp \
   ../../yaml-cpp/include/yaml-cpp/node/parse.h \
   ../../yaml-cpp/include/yaml-cpp/node/emit.h \
   include/engine/planselector/PartialAssignment.h \
+  include/engine/skillmanagement/SkillModule.h \
+  include/engine/skillmanagement/ISkill.h \
   include/engine/syncmodule/SyncModule.h \
   ../alica_common_config/include/alica_common_config/debug_output.h \
   ../../dynamic-role-assignment/include/DynamicRoleAssignment.h
@@ -293,6 +295,10 @@ include/engine/modelmanagement/ModelManager.h:
 ../../yaml-cpp/include/yaml-cpp/node/emit.h:
 
 include/engine/planselector/PartialAssignment.h:
+
+include/engine/skillmanagement/SkillModule.h:
+
+include/engine/skillmanagement/ISkill.h:
 
 include/engine/syncmodule/SyncModule.h:
 

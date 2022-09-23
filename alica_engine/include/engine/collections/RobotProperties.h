@@ -11,7 +11,7 @@
 #include <sstream>
 #include <string>
 
-namespace essetials
+namespace essentials
 {
     class IdentifierConstPtr;
 }
